@@ -2,6 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import CategoryEdit from '../views/CategoryEdit.vue'
+import CategoryList from '../views/CategoryList.vue'
+
+// 解决el-UI导航栏中vue-router在3.0版本以上重复点菜单报错的问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.use(VueRouter)
 
@@ -16,6 +23,17 @@ const routes = [
         name: 'CategoryEdit',
         component: CategoryEdit
       },
+      {
+        path: '/categories/edit/:id',
+        name: 'CategoryEdit',
+        component: CategoryEdit,
+        props: true
+      },
+      {
+        path: '/categories/list',
+        name: 'CategoryList',
+        component: CategoryList
+      }
     ]
   },
 
