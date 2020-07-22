@@ -2,6 +2,16 @@
   <div>
     <h1>{{ id? '编辑': '创建'}}分类</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
+      <el-form-item label="上级分类">
+        <el-select v-model="model.parent" placeholder="请选择">
+          <el-option
+            v-for="item in parentOptions"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="model.name" placeholder="请输入名称"></el-input>
       </el-form-item>
@@ -19,10 +29,13 @@ export default {
   },
   data() {
     return {
-      model: {}
+      model: {},
+      // 上级分类选项
+      parentOptions: []
     };
   },
   created() {
+    this.fetchAllCategories();
     // 如果是编辑分类，则获取当前分类的名称
     this.id && this.fetch();
   },
@@ -48,6 +61,11 @@ export default {
     async fetch() {
       const res = await this.$http.get(`categories/edit/${this.id}`);
       this.model = res.data;
+    },
+    // 获取当前所有分类名称，作为上级分类的选项
+    async fetchAllCategories() {
+      const res = await this.$http.get(`categories`);
+      this.parentOptions = res.data;
     }
   }
 };
