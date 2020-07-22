@@ -29,5 +29,14 @@ module.exports = app => {
         res.send(item)
     })
 
+    // 删除某条分类数据
+    router.delete('/categories/:id', async (req, res) => {
+        // 根据id找到分类名称
+        const item = await Category.findByIdAndDelete(req.params.id)
+        res.send({
+            success: true
+        })
+    })
+
     app.use('/admin/api', router)
 }
