@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import CategoryEdit from '../views/CategoryEdit.vue'
 import CategoryList from '../views/CategoryList.vue'
+// import ItemEdit from '../views/ItemEdit.vue'
+// import ItemList from '../views/ItemList.vue'
 
 // 解决el-UI导航栏中vue-router在3.0版本以上重复点菜单报错的问题
 const originalPush = VueRouter.prototype.push
@@ -33,7 +35,23 @@ const routes = [
         path: '/categories/list',
         name: 'CategoryList',
         component: CategoryList
-      }
+      },
+      // {
+      //   path: '/items/create',
+      //   name: 'ItemEdit',
+      //   component: ItemEdit
+      // },
+      // {
+      //   path: '/items/edit/:id',
+      //   name: 'ItemEdit',
+      //   component: ItemEdit,
+      //   props: true
+      // },
+      // {
+      //   path: '/items/list',
+      //   name: 'ItemList',
+      //   component: ItemList
+      // },
     ]
   },
 

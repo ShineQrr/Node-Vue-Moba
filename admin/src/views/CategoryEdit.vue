@@ -25,13 +25,13 @@
 <script>
 export default {
   props: {
-    id: {}
+    id: {},
   },
   data() {
     return {
       model: {},
       // 上级分类选项
-      parentOptions: []
+      parentOptions: [],
     };
   },
   created() {
@@ -45,29 +45,29 @@ export default {
       let res;
       // 新建分类时用post，编辑分类用put
       if (this.id) {
-        res = await this.$http.put(`/categories/${this.id}`, this.model);
+        res = await this.$http.put(`rest/categories/${this.id}`, this.model);
       } else {
-        res = await this.$http.post("/categories", this.model);
+        res = await this.$http.post("rest/categories", this.model);
       }
       console.log(res);
       // 跳转到分类列表
       this.$router.push("/categories/list");
       this.$message({
         message: "保存成功",
-        type: "success"
+        type: "success",
       });
     },
     // 获取当前id对应的分类名称
     async fetch() {
-      const res = await this.$http.get(`categories/edit/${this.id}`);
+      const res = await this.$http.get(`rest/categories/${this.id}`);
       this.model = res.data;
     },
     // 获取当前所有分类名称，作为上级分类的选项
     async fetchAllCategories() {
-      const res = await this.$http.get(`categories`);
+      const res = await this.$http.get(`rest/categories`);
       this.parentOptions = res.data;
-    }
-  }
+    },
+  },
 };
 </script>
 

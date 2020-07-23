@@ -22,7 +22,7 @@
 export default {
   data() {
     return {
-      items: []
+      items: [],
     };
   },
   created() {
@@ -32,7 +32,7 @@ export default {
   methods: {
     // 获取分类列表
     async fetch() {
-      const res = await this.$http.get("categories");
+      const res = await this.$http.get("rest/categories");
       this.items = res.data;
     },
     async removeItem(row) {
@@ -40,25 +40,25 @@ export default {
       this.$confirm(`是否确定删除分类 “${row.name}”?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(async () => {
-          const res = await this.$http.delete(`categories/${row._id}`);
+          const res = await this.$http.delete(`rest/categories/${row._id}`);
           console.log(res);
           this.$message({
             type: "success",
-            message: "删除成功!"
+            message: "删除成功!",
           });
           this.fetch();
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message: "已取消删除",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
