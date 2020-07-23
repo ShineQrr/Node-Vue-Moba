@@ -6,6 +6,9 @@ app.use(require('cors')())
 // 使用express.json()中间件才能获取post的req.body
 app.use(express.json())
 
+// 静态托管。uploads这个文件夹下的文件都是静态资源
+app.use('/uploads', express.static(__dirname + '/uploads'))
+
 require('./plugins/db')(app)
 require('./routes/admin')(app)
 
