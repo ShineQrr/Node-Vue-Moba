@@ -7,6 +7,8 @@ import ItemEdit from '../views/ItemEdit.vue'
 import ItemList from '../views/ItemList.vue'
 import HeroEdit from '../views/HeroEdit.vue'
 import HeroList from '../views/HeroList.vue'
+import AdminUserEdit from '../views/AdminUserEdit.vue'
+import AdminUserList from '../views/AdminUserList.vue'
 
 // 解决el-UI导航栏中vue-router在3.0版本以上重复点菜单报错的问题
 const originalPush = VueRouter.prototype.push
@@ -72,6 +74,24 @@ const routes = [
         name: 'HeroesList',
         component: HeroList
       },
+      // 管理员路由
+      {
+        path: '/admin_users/create',
+        name: 'AdminUserEdit',
+        component: AdminUserEdit
+      },
+      {
+        path: '/admin_users/edit/:id',
+        name: 'AdminUserEdit',
+        component: AdminUserEdit,
+        props: true
+      },
+      {
+        path: '/admin_users/list',
+        name: 'AdminUserList',
+        component: AdminUserList
+      },
+
     ]
   },
 
