@@ -24,6 +24,7 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: { isPublic: true }
   },
   {
     path: '/',
@@ -112,4 +113,11 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // 如果不是公开访问的页面，而且用户的token不存在,
+  if (!to.meta.isPublic && !localStorage.token) {
+    return next('/login')
+  }
+  next()
+})
 export default router
