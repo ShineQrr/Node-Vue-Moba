@@ -23,33 +23,15 @@ module.exports = app => {
     })
 
     // 获取资源列表
-    router.get('/', async (req, res, next) => {
-        const token = String(req.headers.authorization || '').split(' ').pop()
-        // assert(token, 401, '请提供jwt token')
-        assert(token, 401, '请先登录')
-
-        // 获得的tokenData为{ id: '5f28b6988aee59999c726ba4', iat: 1596516391 }类型数据，通过id就可以找到对应的用户
-        const { id } = jwt.verify(token, app.get('secret'))
-        // assert(id, 401, '无效的jwt token')
-        assert(id, 401, '请先登录')
-
-        // 通过id查询是否真的存在这个用户
-        // 如果希望user在后续过程中也能用，就挂载到req对象上。表示在请求的时候是哪个用户
-        // 因为只有req、res是可以在后续请求中使用的
-        req.user = await AdminUser.findById(id)
-        // 当req.user不存在，报错401 
-        assert(req.user, 401, '请先登录')
-        await next()
-    },
-        async (req, res) => {
-            // 找到10条数据
-            const queryOptions = {}
-            if (req.Model.modelName === 'Category') {
-                queryOptions.populate = 'parent'
-            }
-            const items = await req.Model.find().setOptions(queryOptions).limit(10)
-            res.send(items)
-        })
+    router.get('/', async (req, res) => {
+        // 找到10条数据
+        const queryOptions = {}
+        if (req.Model.modelName === 'Category') {
+            queryOptions.populate = 'parent'
+        }
+        const items = await req.Model.find().setOptions(queryOptions).limit(10)
+        res.send(items)
+    })
 
     // 查找某条资源详情
     router.get('/:id', async (req, res) => {
@@ -67,17 +49,17 @@ module.exports = app => {
         })
     })
 
-    app.use('/admin/api/rest/:resource', async (req, res, next) => {
-        const modelName = require('inflection').classify(req.params.resource)
-        // 给请求对象上挂载一个Model,根据请求路径中的resource，转成大写类，去models文件夹下找对应的类
-        req.Model = require(`../../models/${modelName}`)
-        next()
-    }, router)
+    // auth表示一个登录校验的中间件
+    const authMiddleware = require('../../middleware/auth')
+
+    const resourceMiddleware = require('../../middleware/resource')
+
+    app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
 
 
     const multer = require('multer')
     const upload = multer({ dest: __dirname + '/../../uploads' })
-    app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
+    app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res) => {
         // 接收到的文件在res.file,本身在express中没有res.file，是因为用了multer这个中间件
         const file = req.file
         file.url = `http://localhost:3000/uploads/${file.filename}`
