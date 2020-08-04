@@ -62,4 +62,35 @@ module.exports = app => {
         file.url = `http://localhost:3000/uploads/${file.filename}`
         res.send(file)
     })
+
+
+    // 登录接口 login 请求方法用post
+    app.post('/admin/api/login', async (req, res) => {
+        const { username, password } = req.body;
+        //  1、根据用户名找用户
+        const AdminUser = require('../../models/AdminUser')
+        // select('+password') 表示查的时候把password这个字段取出来
+        const user = await AdminUser.findOne({ username: username }).select('+password')
+        // 如果用户存在，则进行下一步校验；如果用户不存在，则抛出异常
+        if (!user) {
+            return res.status(422).send({
+                message: '用户不存在'
+            })
+        }
+
+        // 2、校验密码
+        const isValid = require('bcrypt').compareSync(password, user.password)
+        if (!isValid) {
+            // 422表示客户端提交的数据有问题
+            return res.status(422).send({
+                message: '密码错误'
+            })
+        }
+
+        // 3、返回token
+        const jwt = require('jsonwebtoken')
+        // 这里的app.get 通过传参来和请求区别，只有一个参数就是获取全局的变量
+        const token = jwt.sign({ id: user._id }, app.get('secret'))
+        res.send({ token })
+    })
 }

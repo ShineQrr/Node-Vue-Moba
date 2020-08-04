@@ -2,6 +2,9 @@ const express = require('express');
 
 const app = express()
 
+// app.set表示在当前这个express实例上设置一个变量
+app.set('secret', 'asdfghjkl')
+
 app.use(require('cors')())
 // 使用express.json()中间件才能获取post的req.body
 app.use(express.json())
