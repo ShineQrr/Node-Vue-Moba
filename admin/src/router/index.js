@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
+import Login from '../views/Login.vue'
 import CategoryEdit from '../views/CategoryEdit.vue'
 import CategoryList from '../views/CategoryList.vue'
 import ItemEdit from '../views/ItemEdit.vue'
@@ -20,6 +21,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
     path: '/',
     name: 'Main',
     component: Main,
@@ -31,7 +37,6 @@ const routes = [
       },
       {
         path: '/categories/edit/:id',
-        name: 'CategoryEdit',
         component: CategoryEdit,
         props: true
       },
@@ -48,7 +53,6 @@ const routes = [
       },
       {
         path: '/items/edit/:id',
-        name: 'ItemEdit',
         component: ItemEdit,
         props: true
       },
@@ -65,7 +69,6 @@ const routes = [
       },
       {
         path: '/heroes/edit/:id',
-        name: 'HeroesEdit',
         component: HeroEdit,
         props: true
       },
@@ -82,7 +85,6 @@ const routes = [
       },
       {
         path: '/admin_users/edit/:id',
-        name: 'AdminUserEdit',
         component: AdminUserEdit,
         props: true
       },

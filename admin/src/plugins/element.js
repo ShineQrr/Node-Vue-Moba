@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, Container, Aside, Menu, Submenu, MenuItemGroup, Header, Dropdown, Table, TableColumn, DropdownItem, Main, MenuItem, DropdownMenu, Input, FormItem, Message, MessageBox, Select, Option, Upload, Rate, Tabs, TabPane, Col, Row, Icon, } from 'element-ui'
+import { Button, Form, Container, Aside, Menu, Submenu, MenuItemGroup, Header, Dropdown, Table, TableColumn, DropdownItem, Main, MenuItem, DropdownMenu, Input, FormItem, Message, MessageBox, Select, Option, Upload, Rate, Tabs, TabPane, Col, Row, Icon, Card, } from 'element-ui'
 
 
 
@@ -29,7 +29,7 @@ Vue.use(TabPane)
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Icon)
-
+Vue.use(Card)
 
 
 

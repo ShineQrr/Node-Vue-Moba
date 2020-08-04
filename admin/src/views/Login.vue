@@ -1,0 +1,49 @@
+<template>
+  <div class="login-container">
+    <el-card header="请先登录" class="login-card">
+      <!-- native表示监听form原生的事件 -->
+      <!-- prevent表示阻止表单默认提交 -->
+      <el-form @submit.native.prevent="login">
+        <el-form-item label="用户名">
+          <el-input v-model="model.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input type="password" v-model="model.password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" native-type="submit">登录</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      // 习惯性地，针对一个表单form，都定义一个model
+      model: {},
+    };
+  },
+  methods: {
+    async login() {
+      const res = await this.$http.post("login", this.model);
+      // 将当前返回数据的token,写入到localstorage中。浏览器关闭后还存在，只要保证是同一个网址域名就可以。
+      // 如果希望关闭浏览器后没了，就写到sessionstorage中
+      localStorage.token = res.data.token;
+      this.$router.push("/");
+      this.$message({
+        type: "success",
+        message: "登录成功",
+      });
+    },
+  },
+};
+</script>
+
+<style>
+.login-card {
+  width: 25rem;
+  margin: 5rem auto;
+}
+</style>
